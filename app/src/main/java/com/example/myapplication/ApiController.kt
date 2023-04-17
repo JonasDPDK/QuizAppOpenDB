@@ -76,8 +76,6 @@ class ApiController(context: Context) {
         requestQueue.add(request)
     }
 
-
-
     fun fetchQuestions(
         category: Int,
         difficulty: String,

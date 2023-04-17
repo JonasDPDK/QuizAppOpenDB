@@ -1,8 +1,6 @@
 package com.example.myapplication
 
-import android.content.ContentValues
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,12 +12,9 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.api.ApiClient
 import com.example.myapplication.model.Category
-import com.example.myapplication.model.Question
-import java.util.Collections
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
@@ -111,6 +106,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Clears and updates the spinner adapter, sets selectedDifficulty based on checked radio button and then calls getCategories() to retrieve categories
+     */
     private fun setDifficultyLevel() {
         // Clear the adapter of the spinner
         spinnerAdapter.clear()
@@ -126,6 +124,9 @@ class MainActivity : AppCompatActivity() {
         getCategories()
     }
 
+    /**
+     * Retrieves a list of categories and adds to spinner if questionCount is 20 or above questions
+     */
     private fun getCategories() {
         categoryIds.clear()
         toggleViews(true)
@@ -143,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                                 "hard" -> categoryCount.totalHardQuestionCount
                                 else -> categoryCount.totalQuestionCount
                             }
-                            if(totalQuestionCount > 20) {
+                            if(totalQuestionCount >= 20) {
                                 spinnerAdapter.add("${category.name} - $totalQuestionCount Questions")
                             }
 
