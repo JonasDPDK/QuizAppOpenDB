@@ -1,23 +1,24 @@
 package com.example.myapplication
 
-import android.content.ContentValues.TAG
 import android.content.Context
-import android.provider.Settings.Global.getString
-import android.util.Log
+import androidx.core.text.HtmlCompat
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.myapplication.model.Category
+import com.example.myapplication.model.CategoryCount
 import com.example.myapplication.model.Question
 import org.json.JSONException
 
-class ApiController(private val context: Context) {
+class ApiController(context: Context) {
 
     private val requestQueue = Volley.newRequestQueue(context)
 
-    fun getCategories(onSuccess: (List<Category>) -> Unit, onError: (VolleyError) -> Unit) {
+    fun getCategories(
+        onSuccess: (List<Category>) -> Unit,
+        onError: (VolleyError) -> Unit
+    ) {
         val url = "https://opentdb.com/api_category.php"
 
         val request = JsonObjectRequest(
@@ -45,7 +46,44 @@ class ApiController(private val context: Context) {
         requestQueue.add(request)
     }
 
-    fun fetchQuestions(category: Int, difficulty: String, onSuccess: (List<Question>) -> Unit, onError: (VolleyError) -> Unit) {
+    fun getCategoryCount(
+        category: Int,
+        onSuccess: (CategoryCount) -> Unit,
+        onError: (VolleyError) -> Unit
+    ) {
+        val url = "https://opentdb.com/api_count.php?category=$category"
+
+        val request = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                try {
+                    val categoryCount = response.getJSONObject("category_question_count")
+                    val totalQuestionCount = categoryCount.getInt("total_question_count")
+                    val totalEasyQuestionCount = categoryCount.getInt("total_easy_question_count")
+                    val totalMediumQuestionCount = categoryCount.getInt("total_medium_question_count")
+                    val totalHardQuestionCount = categoryCount.getInt("total_hard_question_count")
+                    val categoryCountModel = CategoryCount(category, totalQuestionCount, totalEasyQuestionCount, totalMediumQuestionCount, totalHardQuestionCount)
+                    onSuccess(categoryCountModel)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            },
+            { error ->
+                onError(error)
+            }
+        )
+
+        requestQueue.add(request)
+    }
+
+
+
+    fun fetchQuestions(
+        category: Int,
+        difficulty: String,
+        onSuccess: (List<Question>) -> Unit,
+        onError: (VolleyError) -> Unit
+    ) {
         val url = "https://opentdb.com/api.php?amount=10&category=$category&difficulty=$difficulty&type=multiple"
 
         val request = JsonObjectRequest(
@@ -55,32 +93,27 @@ class ApiController(private val context: Context) {
                 val questions = mutableListOf<Question>()
                 for (i in 0 until results.length()) {
                     val result = results.getJSONObject(i)
-                    var question = result.getString("question")
-                    question = question.replace("&quot;", "\"")
-                    question = question.replace("&#039;", "'")
-                    question = question.replace("&amp;", "&")
-                    var correctAnswer = result.getString("correct_answer")
-                    correctAnswer = correctAnswer.replace("&amp;", "&")
-                    correctAnswer = correctAnswer.replace("&rsquo;", "'")
-                    correctAnswer = correctAnswer.replace("&#039;", "'")
-                    val incorrectAnswers = mutableListOf<String>()
+                    // Get question
+                    val question = result.getString("question")
+                    val questionDecoded = HtmlCompat.fromHtml(question, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                    // Get correctAnswer
+                    val correctAnswer = result.getString("correct_answer")
+                    val correctAnswerDecoded = HtmlCompat.fromHtml(correctAnswer, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                    // Get incorrectAnswers
                     val incorrectAnswersArray = result.getJSONArray("incorrect_answers")
+                    val incorrectAnswersDecoded = mutableListOf<String>()
                     for (j in 0 until incorrectAnswersArray.length()) {
-                        var incorrectAnswer = incorrectAnswersArray.getString(j)
-                        incorrectAnswer = incorrectAnswer.replace("&amp;", "&")
-                        incorrectAnswer = incorrectAnswer.replace("&rsquo;", "'")
-                        incorrectAnswer = incorrectAnswer.replace("&#039;", "'")
-                        incorrectAnswers.add(incorrectAnswer)
+                        val incorrectAnswer = incorrectAnswersArray.getString(j)
+                        val incorrectAnswerDecoded = HtmlCompat.fromHtml(incorrectAnswer, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+                        incorrectAnswersDecoded.add(incorrectAnswerDecoded)
                     }
-                    questions.add(Question(question, correctAnswer, incorrectAnswers))
+                    questions.add(Question(questionDecoded, correctAnswerDecoded, incorrectAnswersDecoded))
                 }
                 onSuccess(questions)
             },
             { error ->
-                Log.e("QuestionActivity", "Error fetching questions: ${error.message}")
+                onError(error)
             })
-
         requestQueue.add(request)
     }
-
 }

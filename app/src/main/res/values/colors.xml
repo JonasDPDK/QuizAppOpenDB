@@ -4,6 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#00C612</color>
     <color name="red">#DC0000</color>
-    <color name="button">#535353</color>
-    <color name="my_primary">#03A9F4</color>
+    <color name="button">#1A2330</color>
+    <color name="my_primary2">#0068FF</color>
+    <color name="my_primary">#1A2330</color>
+    <color name="background">#1A2330</color>
+    <color name="background2">#4A7CEE</color>
 </resources>

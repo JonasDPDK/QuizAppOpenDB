@@ -1,83 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_marginBottom="100dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/quiz_game"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textSize="100sp"
+        android:textStyle="bold|italic"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loading..."
-        android:textSize="24sp"
+        android:text="@string/loading"
+        android:textSize="50sp"
         android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:textColor="@color/white"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
-    <TextView
-        android:id="@+id/select_Quiz_Category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Quiz Category"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
-
-    <Spinner
-        android:id="@+id/category_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/select_Quiz_Difficulty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Quiz Difficulty"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:text="@string/select_quiz_difficulty"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
     <RadioGroup
         android:id="@+id/difficulty_radio_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
-        android:checkedButton="@+id/easy_radio_button"
-        android:layout_marginBottom="16dp">
+        android:checkedButton="@+id/easy_radio_button">
 
         <RadioButton
-            android:id="@+id/easy_radio_button"
+            android:id="@+id/easy_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Easy" />
+            android:paddingRight="16dp"
+            android:minHeight="48dp"
+            android:text="@string/easy"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:theme="@style/RadioButtonStyle" />
 
         <RadioButton
-            android:id="@+id/medium_radio_button"
+            android:id="@+id/medium_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Medium" />
+            android:paddingRight="16dp"
+            android:minHeight="48dp"
+            android:text="@string/medium"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:theme="@style/RadioButtonStyle" />
 
         <RadioButton
-            android:id="@+id/hard_radio_button"
+            android:id="@+id/hard_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hard" />
+            android:paddingRight="16dp"
+            android:minHeight="48dp"
+            android:text="@string/hard"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:theme="@style/RadioButtonStyle" />
 
     </RadioGroup>
 
-    <Button
-        android:id="@+id/start_quiz_button"
+    <TextView
+        android:id="@+id/select_Quiz_Category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Quiz"
-        android:textSize="24sp" />
+        android:layout_marginBottom="16dp"
+        android:text="@string/select_quiz_category"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:minHeight="48dp"
+        android:spinnerMode="dropdown"
+        android:textColor="#FF0000"
+        android:backgroundTint="@color/white"/>
+
+    <Button
+        android:id="@+id/start_quiz_button"
+        android:layout_width="250dp"
+        android:layout_height="75sp"
+        android:layout_marginTop="30dp"
+        android:text="@string/start_quiz"
+        android:textSize="35sp"
+        android:background="@drawable/button_style"
+        android:backgroundTint="@color/white"/>
+
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/author"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        android:textStyle="italic" />
 
 </LinearLayout>
 
